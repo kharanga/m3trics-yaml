@@ -134,6 +134,8 @@ spec:
             limits:
               cpu: "999m"
               memory: "1G"
+          ports: 
+            - containerPort: 9003
           env:
             - name: PROMETHEUS_SERVER_ENDPOINT
               value: "http://my-prometheus-server.prometheus.svc"
@@ -159,6 +161,8 @@ spec:
             limits:
               cpu: "999m"
               memory: "1G"
+          ports: 
+            - containerPort: 9090
           imagePullPolicy: Always
 ---
 kind: Service
