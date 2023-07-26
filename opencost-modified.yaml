@@ -193,9 +193,14 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: Host(`opencost.crawld.m3s8.issgovernance.com`)
+  - match: Host(`opencostapi.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost-service
+    - name: opencost
+      port: 9003
+  - match: Host(`opencostui.crawld.m3s8.issgovernance.com`)
+    kind: Rule
+    services:
+    - name: opencost-ui
       port: 9090
 
