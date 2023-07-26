@@ -63,7 +63,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: opencost
+  name: opencost-api
   namespace: opencost
 spec:
   selector:
@@ -74,6 +74,17 @@ spec:
       protocol: TCP
       port: 9003
       targetPort: 9003
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: opencost-ui
+  namespace: opencost
+spec:
+  selector:
+    app: opencost
+    namespace: opencost
+  ports:
     - name: opencost-ui
       protocol: TCP
       port: 9090
@@ -91,11 +102,11 @@ spec:
   - match: Host(`opencostui.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost
+    - name: opencost-ui
       port: 9090
   - match: Host(`opencostapi.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost
+    - name: opencost-api
       port: 9003
 
