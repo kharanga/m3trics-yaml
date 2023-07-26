@@ -178,7 +178,9 @@ spec:
     - name: opencost
       port: 9003
       targetPort: 9003
+      nodePort: 30003
     - name: opencost-ui
       port: 9090
       targetPort: 9090
+      nodePort: 30005
 ---
