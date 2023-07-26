@@ -3,130 +3,25 @@ kind: Namespace
 metadata:
     name: opencost
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: opencost-service-account
-  namespace: opencost
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: opencost-cluster-role
-rules:
-  - apiGroups:
-      - ''
-    resources:
-      - configmaps
-      - deployments
-      - nodes
-      - pods
-      - services
-      - resourcequotas
-      - replicationcontrollers
-      - limitranges
-      - persistentvolumeclaims
-      - persistentvolumes
-      - namespaces
-      - endpoints
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - extensions
-    resources:
-      - daemonsets
-      - deployments
-      - replicasets
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - apps
-    resources:
-      - statefulsets
-      - deployments
-      - daemonsets
-      - replicasets
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - batch
-    resources:
-      - cronjobs
-      - jobs
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - autoscaling
-    resources:
-      - horizontalpodautoscalers
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - policy
-    resources:
-      - poddisruptionbudgets
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - storage.k8s.io
-    resources:
-      - storageclasses
-    verbs:
-      - get
-      - list
-      - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: opencost-cluster-role-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: opencost-cluster-role
-subjects:
-  - kind: ServiceAccount
-    name: opencost-service-account
-    namespace: opencost
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opencost-app-deployment
+  name: opencost
   namespace: opencost
-  labels:
-    app: opencost-app
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: opencost-app
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+      app: opencost
+      namespace: opencost
   template:
     metadata:
       labels:
-        app: opencost-app
+        app: opencost
+        namespace: opencost
     spec:
-      restartPolicy: Always
-      serviceAccountName: opencost
       containers:
         - image: quay.io/kubecost1/kubecost-cost-model:latest
-          name: opencost
+          name: opencost-api
           resources:
             requests:
               cpu: "10m"
@@ -168,14 +63,14 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: opencost-service
+  name: opencost
   namespace: opencost
 spec:
   selector:
-    app: opencost-app
+    app: opencost
     namespace: opencost
   ports:
-    - name: opencost
+    - name: opencost-api
       protocol: TCP
       port: 9003
       targetPort: 9003
@@ -187,7 +82,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: opencost-route
+  name: opencost
   namespace: opencost
 spec:
   entryPoints:
@@ -201,6 +96,6 @@ spec:
   - match: Host(`opencostui.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost-ui
+    - name: opencost
       port: 9090
 
