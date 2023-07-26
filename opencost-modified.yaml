@@ -176,11 +176,11 @@ spec:
     app: opencost
   ports:
     - name: opencost
+      protocol: TCP
       port: 9003
       targetPort: 9003
-      nodePort: 30003
     - name: opencost-ui
+      protocol: TCP
       port: 9090
       targetPort: 9090
-      nodePort: 30005
 ---
