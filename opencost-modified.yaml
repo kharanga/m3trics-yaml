@@ -3,6 +3,103 @@ kind: Namespace
 metadata:
     name: opencost
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: opencost
+  namespace: opencost
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: opencost
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - deployments
+      - nodes
+      - pods
+      - services
+      - resourcequotas
+      - replicationcontrollers
+      - limitranges
+      - persistentvolumeclaims
+      - persistentvolumes
+      - namespaces
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - daemonsets
+      - deployments
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - statefulsets
+      - deployments
+      - daemonsets
+      - replicasets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - cronjobs
+      - jobs
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - autoscaling
+    resources:
+      - horizontalpodautoscalers
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - policy
+    resources:
+      - poddisruptionbudgets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: opencost
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: opencost
+subjects:
+  - kind: ServiceAccount
+    name: opencost
+    namespace: opencost
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +116,8 @@ spec:
         app: opencost
         namespace: opencost
     spec:
+      restartPolicy: Always
+      serviceAccountName: opencost
       containers:
         - image: quay.io/kubecost1/kubecost-cost-model:latest
           name: opencost-api
@@ -63,7 +162,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: opencost-api
+  name: opencost
   namespace: opencost
 spec:
   selector:
@@ -74,17 +173,6 @@ spec:
       protocol: TCP
       port: 9003
       targetPort: 9003
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: opencost-ui
-  namespace: opencost
-spec:
-  selector:
-    app: opencost
-    namespace: opencost
-  ports:
     - name: opencost-ui
       protocol: TCP
       port: 9090
@@ -102,11 +190,11 @@ spec:
   - match: Host(`opencostui.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost-ui
+    - name: opencost
       port: 9090
   - match: Host(`opencostapi.crawld.m3s8.issgovernance.com`)
     kind: Rule
     services:
-    - name: opencost-api
+    - name: opencost
       port: 9003
 
