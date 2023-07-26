@@ -189,13 +189,12 @@ metadata:
   name: opencost-ingress
 spec:
   rules:
-    - host: 192.168.99.100
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: opencost-service   # The name of the Service you created earlier
-                port:
-                  number: 9090 
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: opencost-service   # The name of the Service you created earlier
+            port:
+              number: 9090 
