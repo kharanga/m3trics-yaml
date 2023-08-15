@@ -154,8 +154,8 @@ spec:
           ports: 
             - containerPort: 9003
           env:
-            - name: "pn2-ifr-lmss001.ad.issgovernance.com:9090"
-              value: "http://my-prometheus-server.prometheus.svc" # The endpoint should have the form http://<service-name>.<namespace-name>.svc
+            - name: PROMETHEUS_SERVER_ENDPOINT
+              value: "http://pn2-ifr-lmss001.ad.issgovernance.com:9090" # The endpoint should have the form http://<service-name>.<namespace-name>.svc
             - name: CLOUD_PROVIDER_API_KEY
               value: "AIzaSyD29bGxmHAVEOBYtgd8sYM2gM2ekfxQX4U" # The GCP Pricing API requires a key. This is supplied just for evaluation.
             - name: CLUSTER_ID
