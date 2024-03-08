@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`opencost.newsd.m3s8.issgovernance.com`)
+    - match: Host(`opencost.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
         - name: opencost-exporter
