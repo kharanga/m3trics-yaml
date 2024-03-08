@@ -5,9 +5,9 @@ metadata:
   namespace: opencost-exporter
 spec:
   selector:
-    app: opencost-exporter
+    app: opencost
   type: ClusterIP
   ports:
-    - name: opencost-exporter
+    - name: opencost
       port: 9003
       targetPort: 9003
