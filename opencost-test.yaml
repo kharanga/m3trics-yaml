@@ -9,5 +9,5 @@ spec:
   type: ClusterIP
   ports:
     - name: opencost
-      port: 9003
-      targetPort: 9004
+      port: 9090
+      targetPort: 9090
