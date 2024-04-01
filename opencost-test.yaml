@@ -1,8 +1,8 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: opencost-exporter
-  namespace: opencost-exporter
+  name: opencost
+  namespace: opencost
 spec:
   selector:
     app: opencost
@@ -10,4 +10,4 @@ spec:
   ports:
     - name: opencost
       port: 9003
-      targetPort: 9003
+      targetPort: 9004
