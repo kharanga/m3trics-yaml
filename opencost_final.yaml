@@ -1,3 +1,4 @@
+
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -195,13 +196,13 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`opencost-exporter.newsd-a.m3s8.issgovernance.com`)
+    - match: Host(`opencost-exporter.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
         - name: opencost
           namespace: opencost
           port: 9003
-    - match: Host(`opencost-ui.newsd-a.m3s8.issgovernance.com`)
+    - match: Host(`opencost-ui.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
         - name: opencost
