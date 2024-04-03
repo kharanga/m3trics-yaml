@@ -196,7 +196,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`opencost-exporter.crawld.m3s8.issgovernance.com`)
+    - match: Host(`opencostexporter.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
         - name: opencost
@@ -213,7 +213,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`opencost-ui.crawld.m3s8.issgovernance.com`)
+    - match: Host(`opencostui.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
         - name: opencost
