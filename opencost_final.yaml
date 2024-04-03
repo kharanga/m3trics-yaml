@@ -202,6 +202,17 @@ spec:
         - name: opencost
           namespace: opencost
           port: 9003
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: opencost-ui
+  namespace: opencost
+spec:
+  entryPoints:
+    - web
+  routes:
     - match: Host(`opencost-ui.crawld.m3s8.issgovernance.com`)
       kind: Rule
       services:
